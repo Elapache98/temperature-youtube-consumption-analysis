@@ -78,7 +78,7 @@ let tempRange = d3.scaleLinear()
     .range([margin, svgWidth - margin]);
 
 let minutesOnYoutube = d3.scaleLinear()
-    .domain([0, 500])
+    .domain([0, 250])
     .range([svgHeight - margin, margin]);
 
 let circles = svg.selectAll("circle")
@@ -99,7 +99,7 @@ circles.attr("r", 8)
     this provides an easier way to visually discern how my youtube consumption is tied to the weather ***/ {
         if (value.xAvgTemperature < 55) {
             return "blue";
-        } else if (value.xAvgTemperature > 55) {
+        } else if (value.xAvgTemperature >= 55) {
             return "red";
         }
     })
