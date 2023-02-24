@@ -38,32 +38,32 @@ let dataset = [
      y= minutes spent on Youtube/day
      ***/
     /*** 11/02/23 ***/
-    { xAvgTemperature: 44, yMinutesOnYoutube: 10, manchesterUnitedWon: null },
+    { xAvgTemperature: 44, yMinutesOnYoutube: 10, moodRange: 3 },
     /*** 12/02/23 ***/
-    { xAvgTemperature: 51, yMinutesOnYoutube: 237, manchesterUnitedWon: true },
+    { xAvgTemperature: 51, yMinutesOnYoutube: 237, moodRange: 4.5 },
     /*** 13/02/23 ***/
-    { xAvgTemperature: 43, yMinutesOnYoutube: 90, manchesterUnitedWon: null },
+    { xAvgTemperature: 43, yMinutesOnYoutube: 90, moodRange: 3 },
     /*** 14/02/23 ***/
-    { xAvgTemperature: 51, yMinutesOnYoutube: 214, manchesterUnitedWon: null },
+    { xAvgTemperature: 51, yMinutesOnYoutube: 214, moodRange: 3 },
     /*** 15/02/23 ***/
-    { xAvgTemperature: 59, yMinutesOnYoutube: 102, manchesterUnitedWon: null },
+    { xAvgTemperature: 59, yMinutesOnYoutube: 102, moodRange: 3 },
     /*** 16/02/23 ***/
-    { xAvgTemperature: 63, yMinutesOnYoutube: 165, manchesterUnitedWon: false },
+    { xAvgTemperature: 63, yMinutesOnYoutube: 165, moodRange: 4 },
     /*** 17/02/23 ***/
-    { xAvgTemperature: 60, yMinutesOnYoutube: 100, manchesterUnitedWon: null },
+    { xAvgTemperature: 60, yMinutesOnYoutube: 100, moodRange: 2 },
     /*** 18/02/23 ***/
-    { xAvgTemperature: 41, yMinutesOnYoutube: 39, manchesterUnitedWon: null },
+    { xAvgTemperature: 41, yMinutesOnYoutube: 39, moodRange: 3 },
     /*** 19/02/23 ***/
-    { xAvgTemperature: 48, yMinutesOnYoutube: 60, manchesterUnitedWon: true },
+    { xAvgTemperature: 48, yMinutesOnYoutube: 60, moodRange: 4 },
     /*** 20/02/23 ***/
-    { xAvgTemperature: 61, yMinutesOnYoutube: 128, manchesterUnitedWon: null },
+    { xAvgTemperature: 61, yMinutesOnYoutube: 128, moodRange: 4 },
     /*** 21/02/23 ***/
-    { xAvgTemperature: 40, yMinutesOnYoutube: 135, manchesterUnitedWon: null },
+    { xAvgTemperature: 40, yMinutesOnYoutube: 135, moodRange: 3.5 },
     /*** 22/02/23 ***/
-    { xAvgTemperature: 44, yMinutesOnYoutube: 66, manchesterUnitedWon: null },
+    { xAvgTemperature: 44, yMinutesOnYoutube: 66, moodRange: 2 },
 
     /*** 23/02/23 ***/
-    { xAvgTemperature: 32, yMinutesOnYoutube: 126, manchesterUnitedWon: true },
+    { xAvgTemperature: 32, yMinutesOnYoutube: 126, moodRange: 3.5 },
 ];
 
 dataset.sort(function compareByTemperature(a, b) {
@@ -92,34 +92,25 @@ circles.attr("r", 8)
     .attr("cy", function (value) {
         return minutesOnYoutube(value.yMinutesOnYoutube);
     })
-    .attr("fill", function (value)
-    /****  the function takes into consideration the value of the x axis to depict what color the circle would be
-    blue = means less than 55 degrees and tends to be cooler weather
-    red = more than 55 degrees and tends to be more comfortable weather to be outside in
-    this provides an easier way to visually discern how my youtube consumption is tied to the weather ***/ {
+    .attr("fill", function (value) {
+        // Set the color of the circle based on the xAvgTemperature value
         if (value.xAvgTemperature < 55) {
-            return "blue";
-        } else if (value.xAvgTemperature >= 55) {
-            return "red";
+            return "blue"; // Cooler weather
+        } else {
+            return "red"; // More comfortable weather
         }
     })
-    /*** here this function considers the radi of the circles. I added another property to the data set
-     * that takes into considerations days where Manchester United played to see whether days the play affect my mood and 
-     * how that correlates with the minutes I spend on Youtube. Days where United play will typically have bigger
-     * circles than days when Manchester United don't play. If Manchester United wins - the circle is the biggest
-     * If Manchester United, draw or lose, the circle is medium
-     * if Manchester United, do not play the circle is rather quite small
-     */
     .attr("r", function (value) {
-        if (value.manchesterUnitedWon === true) {
-            return 10;
-        } else if (value.manchesterUnitedWon === false) {
-            return 5;
+        // Set the radius of the circle based on the moodRange value
+        if (value.moodRange >= 4) {
+            return 10; // Mood is great
+        } else if (value.moodRange <= 2) {
+            return 3; // Mood is sour
         } else {
-            return 3;
+            return 6; // Mood is average
         }
-
-    });
+    })
+    .attr("opacity", 0.5); // Set the opacity of the circle to 50%
 
 /**** label the axes ****/
 let xAxisLabel = svg.append("text")
@@ -166,6 +157,6 @@ pulling the values of the datasets for each circle and shows the user what these
 source: https://www.pluralsight.com/guides/create-tooltips-in-d3js */
 circles.append("title")
     .text(function (value) {
-        return "Temperature: " + value.xAvgTemperature + "\nMinutes on Youtube: " + value.yMinutesOnYoutube + "\nManchester United Win: " + value.manchesterUnitedWon;
+        return "Temperature: " + value.xAvgTemperature + "\nMinutes on Youtube: " + value.yMinutesOnYoutube + "\nMood scale: " + value.moodRange;
     });
 
