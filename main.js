@@ -157,6 +157,6 @@ pulling the values of the datasets for each circle and shows the user what these
 source: https://www.pluralsight.com/guides/create-tooltips-in-d3js */
 circles.append("title")
     .text(function (value) {
-        return "Temperature: " + value.xAvgTemperature + "\nMinutes on Youtube: " + value.yMinutesOnYoutube + "\nMood scale: " + value.moodRange;
+        return "Temperature in Fahrenheit: " + value.xAvgTemperature + "\nMinutes on Youtube: " + value.yMinutesOnYoutube + "\nMood scale: " + value.moodRange;
     });
 
